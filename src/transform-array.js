@@ -6,25 +6,29 @@ function transform(arr) {
   }
 
   const result = [];
+  const discarded = new Set();
 
   for (let i = 0; i < arr.length; i++) {
     const current = arr[i];
 
     if (current === "--discard-next") {
-      i++;
+      if (i + 1 < arr.length) {
+        discarded.add(i + 1);
+        i++;
+      }
     } else if (current === "--discard-prev") {
-      if (result.length > 0 && arr[i - 1] !== undefined) {
+      if (i - 1 >= 0 && !discarded.has(i - 1)) {
         result.pop();
       }
     } else if (current === "--double-next") {
-      if (i + 1 < arr.length) {
+      if (i + 1 < arr.length && !discarded.has(i + 1)) {
         result.push(arr[i + 1]);
       }
     } else if (current === "--double-prev") {
-      if (i - 1 >= 0 && arr[i - 1] === result[result.length - 1]) {
-        result.push(arr[i - 1]);
+      if (i - 1 >= 0 && !discarded.has(i - 1) && result.length > 0) {
+        result.push(result[result.length - 1]);
       }
-    } else {
+    } else if (!discarded.has(i)) {
       result.push(current);
     }
   }
@@ -35,27 +39,3 @@ function transform(arr) {
 module.exports = {
   transform,
 };
-
-console.log(transform([1, 2, 3, "--double-next", 4, 5]));
-
-console.log(transform([1, 2, 3, "--discard-prev", 4, 5]));
-
-console.log(transform([1, 2, "--discard-next", 3, 4]));
-
-console.log(transform([1, 2, 3, "--double-prev"]));
-
-console.log(transform(["--double-prev", 1, 2, 3]));
-
-console.log(transform([1, 2, 3, "--double-next"]));
-
-console.log(transform([1, 2, 3, "--discard-next", 4, 5, "--discard-prev", 6]));
-
-console.log(
-  transform([1, 2, 3, "--discard-next", 1337, "--double-prev", 4, 5])
-);
-
-try {
-  transform("not an array");
-} catch (e) {
-  console.log(e.message);
-}
