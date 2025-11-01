@@ -1,22 +1,28 @@
-const { NotImplementedError } = require('../lib');
+const { NotImplementedError } = require("../lib");
 
-/**
- * Given a number, replace this number with
- * the sum of its digits until we get to a one digit number.
- *
- * @param {Number} n
- * @return {Number}
- *
- * @example
- * For 100, the result should be 1 (1 + 0 + 0 = 1)
- * For 91, the result should be 1 (9 + 1 = 10, 1 + 0 = 1)
- *
- */
-function getSumOfDigits(/* n */) {
-  // Remove line below and write your code here
-  throw new NotImplementedError('Not implemented');
+function getSumOfDigits(n) {
+  while (n > 9) {
+    n = String(n)
+      .split("")
+      .reduce((sum, digit) => sum + Number(digit), 0);
+  }
+  return n;
 }
 
 module.exports = {
-  getSumOfDigits
+  getSumOfDigits,
 };
+
+console.log(getSumOfDigits(100));
+
+console.log(getSumOfDigits(91));
+
+console.log(getSumOfDigits(456));
+
+console.log(getSumOfDigits(9999));
+
+console.log(getSumOfDigits(5));
+
+console.log(getSumOfDigits(99));
+
+console.log(getSumOfDigits(12345));
