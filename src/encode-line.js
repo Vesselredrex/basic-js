@@ -15,7 +15,7 @@ function encodeLine(str) {
   if (!str) return "";
 
   let result = ""; // Тут будемо зберігати результат
-  let count = 1; // Лічильник повторень (починаємо з 1)
+  let count = 1;
 
   // Йдемо по кожній літері в рядку
   for (let i = 0; i < str.length; i++) {

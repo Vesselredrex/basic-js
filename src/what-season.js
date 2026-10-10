@@ -3,11 +3,18 @@ function getSeason(date) {
     return "Unable to determine the time of year!";
   }
 
-  if (!(date instanceof Date) || isNaN(date.getTime())) {
+  let timestamp;
+  try {
+    timestamp = Date.prototype.getTime.call(date);
+  } catch {
     throw new Error("Invalid date!");
   }
 
-  const month = date.getMonth();
+  if (Number.isNaN(timestamp)) {
+    throw new Error("Invalid date!");
+  }
+
+  const month = Date.prototype.getMonth.call(date);
 
   if (month === 11 || month === 0 || month === 1) return "winter";
   if (month >= 2 && month <= 4) return "spring";
